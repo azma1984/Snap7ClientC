@@ -238,7 +238,7 @@ void TSnapBase_init();
 				bool TMsgSocket_CanWrite(int Timeout);
 				void TMsgSocket_GetLocal();
 			//	void TMsgSocket_GetRemote();
-				struct sockaddr_in TMsgSocket_SetSin(struct sockaddr_in sin, char *Address, u_short Port);
+				void TMsgSocket_SetSin(struct sockaddr_in *p_sin, char *Address, u_short Port);
 				u_short TMsgSocket_GetSin(struct sockaddr_in sin, char *Address, u_short Port);
 
 					socket_t FSocket;

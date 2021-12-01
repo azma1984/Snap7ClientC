@@ -105,24 +105,23 @@ void TMsgSocket_deinit()
 		//delete Pinger;
 }
 //---------------------------------------------------------------------------
-struct sockaddr_in TMsgSocket_SetSin(struct sockaddr_in sin, char *Address, u_short Port)
+void TMsgSocket_SetSin(struct sockaddr_in *p_sin, char *Address, u_short Port)
 {
 		uint32_t in_addr;
 		in_addr=inet_addr(Address);
-		memset(&sin, 0, sizeof(sin));
+		memset(p_sin, 0, sizeof(*p_sin));
 		LastTcpError=0;
 
 		if (in_addr!=INADDR_NONE)
 		{
-		sin.sin_addr.s_addr = in_addr;
-		sin.sin_family = AF_INET;
-		sin.sin_port = htons(Port);
+		p_sin->sin_addr.s_addr = in_addr;
+		p_sin->sin_family = AF_INET;
+		p_sin->sin_port = htons(Port);
 		}
 		else
 		{
 				LastTcpError=WSAEINVALIDADDRESS;
 		}
-		return sin;
 }
 //---------------------------------------------------------------------------
 u_short TMsgSocket_GetSin(struct sockaddr_in sin, char *Address, u_short Port)
@@ -429,7 +428,7 @@ int TMsgSocket_SckConnect()
 int TMsgSocket_SckConnect()
 {
 		int Result;
-		LocalSin = TMsgSocket_SetSin(RemoteSin, RemoteAddress, RemotePort);
+		TMsgSocket_SetSin(&RemoteSin, RemoteAddress, RemotePort);
 		if (LastTcpError==0)
 		{
 				//if (Ping(RemoteSin))
@@ -481,7 +480,7 @@ void TMsgSocket_SckDisconnect()
 //{
 //    int Res;
 //    int Opt=1;
-//    LocalSin = TMsgSocket_SetSin(LocalSin, LocalAddress, LocalPort);
+//    TMsgSocket_SetSin(&LocalSin, LocalAddress, LocalPort);
 //    if (LastTcpError==0)
 //    {
 //        TMsgSocket_CreateSocket();
