@@ -26,6 +26,10 @@
 #include "s7_peer.h"
 //---------------------------------------------------------------------------
 
+const byte pduNegotiate   	= 0xF0;   // Negotiate PDU length
+
+const longword errNegotiatingPDU = 0x00100000;
+
 void TSnap7Peer_init()
 {
 		PDUH_out = (PS7ReqHeader)(&PDU.Payload);
@@ -42,11 +46,11 @@ void TSnap7Peer_deinit()
 //---------------------------------------------------------------------------
 int TSnap7Peer_SetError(int Error)
 {
-//		if (Error==0)
-//			 TSnap7Peer_ClrError();
-//		else
-//			 LastError=Error | LastIsoError | LastTcpError;
-//    return Error;
+		if (Error==0)
+			 TSnap7Peer_ClrError();
+		else
+			 LastError=Error | LastIsoError | LastTcpError;
+		return Error;
 }
 //---------------------------------------------------------------------------
 void TSnap7Peer_ClrError()
@@ -66,44 +70,44 @@ word TSnap7Peer_GetNextWord()
 int TSnap7Peer_NegotiatePDULength( )
 {
     int Result, IsoSize = 0;
-//    PReqFunNegotiateParams ReqNegotiate;
-//    PResFunNegotiateParams ResNegotiate;
-//    PS7ResHeader23 Answer;
-//    TSnap7Peer_ClrError();
-//    // Setup Pointers
-//    ReqNegotiate = PReqFunNegotiateParams(pbyte(PDUH_out) + sizeof(TS7ReqHeader));
-//    // Header
-//    PDUH_out->P        = 0x32;            // Always $32
-//    PDUH_out->PDUType  = PduType_request; // $01
-//    PDUH_out->AB_EX    = 0x0000;          // Always $0000
-//    PDUH_out->Sequence = GetNextWord();   // AutoInc
-//    PDUH_out->ParLen   = TSnapBase_SwapWord(sizeof(TReqFunNegotiateParams)); // 8 bytes
-//    PDUH_out->DataLen  = 0x0000;
-//    // Params
-//    ReqNegotiate->FunNegotiate = pduNegotiate;
-//    ReqNegotiate->Unknown = 0x00;
-//    ReqNegotiate->ParallelJobs_1 = 0x0100;
-//    ReqNegotiate->ParallelJobs_2 = 0x0100;
-//    ReqNegotiate->PDULength = TSnapBase_SwapWord(PDURequest);
-//    IsoSize = sizeof( TS7ReqHeader ) + sizeof( TReqFunNegotiateParams );
-//    Result = isoExchangeBuffer(NULL, IsoSize);
-//    if ((Result == 0) && (IsoSize == int(sizeof(TS7ResHeader23) + sizeof(TResFunNegotiateParams))))
-//    {
-//        // Setup pointers
-//        Answer = PS7ResHeader23(&PDU.Payload);
-//        ResNegotiate = PResFunNegotiateParams(pbyte(Answer) + sizeof(TS7ResHeader23));
-//        if ( Answer->Error != 0 )
-//	    Result = SetError(errNegotiatingPDU);
-//        if ( Result == 0 )
-//	    PDULength = TSnapBase_SwapWord(ResNegotiate->PDULength);
-//    }
-	//  return Result;
+		PReqFunNegotiateParams ReqNegotiate;
+		PResFunNegotiateParams ResNegotiate;
+		PS7ResHeader23 Answer;
+		TSnap7Peer_ClrError();
+		// Setup Pointers
+		ReqNegotiate = (PReqFunNegotiateParams)((pbyte)(PDUH_out) + sizeof(TS7ReqHeader));
+		// Header
+		PDUH_out->P        = 0x32;            // Always $32
+		PDUH_out->PDUType  = PduType_request; // $01
+		PDUH_out->AB_EX    = 0x0000;          // Always $0000
+		PDUH_out->Sequence = TSnap7Peer_GetNextWord();   // AutoInc
+		PDUH_out->ParLen   = TSnapBase_SwapWord(sizeof(TReqFunNegotiateParams)); // 8 bytes
+		PDUH_out->DataLen  = 0x0000;
+		// Params
+		ReqNegotiate->FunNegotiate = pduNegotiate;
+		ReqNegotiate->Unknown = 0x00;
+		ReqNegotiate->ParallelJobs_1 = 0x0100;
+		ReqNegotiate->ParallelJobs_2 = 0x0100;
+		ReqNegotiate->PDULength = TSnapBase_SwapWord(PDURequest);
+		IsoSize = sizeof( TS7ReqHeader ) + sizeof( TReqFunNegotiateParams );
+		Result = TIsoTcpSocket_isoExchangeBuffer(NULL, IsoSize);
+		if ((Result == 0) && (IsoSize == (int)(sizeof(TS7ResHeader23) + sizeof(TResFunNegotiateParams))))
+		{
+				// Setup pointers
+				Answer = (PS7ResHeader23)(&PDU.Payload);
+				ResNegotiate = (PResFunNegotiateParams)((pbyte)(Answer) + sizeof(TS7ResHeader23));
+				if ( Answer->Error != 0 )
+			Result = TSnap7Peer_SetError(errNegotiatingPDU);
+				if ( Result == 0 )
+			PDULength = TSnapBase_SwapWord(ResNegotiate->PDULength);
+		}
+		return Result;
 }
 //---------------------------------------------------------------------------
 void TSnap7Peer_PeerDisconnect( )
 {
-	 // TSnap7Peer_ClrError();
-	 // isoDisconnect(true);
+		TSnap7Peer_ClrError();
+		TIsoTcpSocket_isoDisconnect(true);
 }
 //---------------------------------------------------------------------------
 int TSnap7Peer_PeerConnect( )

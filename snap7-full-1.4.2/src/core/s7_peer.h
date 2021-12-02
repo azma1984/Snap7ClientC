@@ -33,7 +33,7 @@
 
 //const longword errPeerMask 	     = 0xFFF00000;
 //const longword errPeerBase       = 0x000FFFFF;
-//const longword errNegotiatingPDU = 0x00100000;
+extern const longword errNegotiatingPDU;
 
 word cntword;
 

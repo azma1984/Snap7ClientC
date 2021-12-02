@@ -237,7 +237,7 @@ extern const byte PduType_request;      // family request
 ////const byte pduResponse    	= 0x02;   // Response (when error)
 const byte pduFuncRead;   // Read area
 const byte pduFuncWrite;   // Write area
-////const byte pduNegotiate   	= 0xF0;   // Negotiate PDU length
+extern const byte pduNegotiate;   // Negotiate PDU length
 ////const byte pduStart         = 0x28;   // CPU start
 ////const byte pduStop          = 0x29;   // CPU stop
 ////const byte pduStartUpload   = 0x1D;   // Start Upload
@@ -372,28 +372,28 @@ extern const int ResHeaderSize23;
 //	byte   Seq;    // sequence
 //}TReqFunTypedParams;
 
-////==============================================================================
-////                            FUNCTION NEGOTIATE
-////==============================================================================
-//typedef struct {
-//	byte    FunNegotiate;
-//	byte    Unknown;
-//	word    ParallelJobs_1;
-//	word    ParallelJobs_2;
-//	word    PDULength;
-//}TReqFunNegotiateParams;
+//==============================================================================
+//                            FUNCTION NEGOTIATE
+//==============================================================================
+typedef struct {
+	byte    FunNegotiate;
+	byte    Unknown;
+	word    ParallelJobs_1;
+	word    ParallelJobs_2;
+	word    PDULength;
+}TReqFunNegotiateParams;
 
-//typedef TReqFunNegotiateParams* PReqFunNegotiateParams;
+typedef TReqFunNegotiateParams* PReqFunNegotiateParams;
 
-//typedef struct {
-//	byte    FunNegotiate;
-//	byte    Unknown;
-//	word    ParallelJobs_1;
-//	word    ParallelJobs_2;
-//	word    PDULength;
-//}TResFunNegotiateParams;
+typedef struct {
+	byte    FunNegotiate;
+	byte    Unknown;
+	word    ParallelJobs_1;
+	word    ParallelJobs_2;
+	word    PDULength;
+}TResFunNegotiateParams;
 
-//typedef TResFunNegotiateParams* PResFunNegotiateParams;
+typedef TResFunNegotiateParams* PResFunNegotiateParams;
 
 //==============================================================================
 //                               FUNCTION READ
