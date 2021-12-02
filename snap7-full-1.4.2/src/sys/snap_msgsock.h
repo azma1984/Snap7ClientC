@@ -69,7 +69,7 @@ typedef int socket_t;
 //#define  SD_RECEIVE      0x00
 //#define  SD_SEND         0x01
 //#define  SD_BOTH         0x02
-//#define  MaxPacketSize   65536
+#define  MaxPacketSize   65536
 
 ////----------------------------------------------------------------------------
 //// For other platform we need to re-define next constants
@@ -250,9 +250,9 @@ void TSnapBase_init();
         // Called when a socket is assigned externally
 			//	void TMsgSocket_GotSocket();
         // Returns how many bytes are ready to be read in the winsock buffer
-			//	int TMsgSocket_WaitingData();
+				int TMsgSocket_WaitingData();
         // Waits until there at least "size" bytes ready to be read or until receive timeout occurs
-			//	int TMsgSocket_WaitForData(int Size, int Timeout);
+				int TMsgSocket_WaitForData(int Size, int Timeout);
         // Clear socket input buffer
 				void TMsgSocket_Purge();
 

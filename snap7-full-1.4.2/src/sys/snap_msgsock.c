@@ -222,50 +222,50 @@ void TMsgSocket_DestroySocket()
 		LastTcpError=0;
 }
 //---------------------------------------------------------------------------
-//int TMsgSocket_WaitingData()
-//{
-//    int result = 0;
-//    u_long x = 0;
-//#ifdef OS_WINDOWS
-//    if (ioctlsocket(FSocket, FIONREAD, &x) == 0)
-//        result = x;
-//#else
-//    if (ioctl(FSocket, FIONREAD, &x) == 0)
-//        result = x;
-//#endif
-//    if (result>MaxPacketSize)
-//        result = MaxPacketSize;
-//    return result;
-//}
+int TMsgSocket_WaitingData()
+{
+		int result = 0;
+		u_long x = 0;
+#ifdef OS_WINDOWS
+		if (ioctlsocket(FSocket, FIONREAD, &x) == 0)
+				result = x;
+#else
+		if (ioctl(FSocket, FIONREAD, &x) == 0)
+				result = x;
+#endif
+		if (result>MaxPacketSize)
+				result = MaxPacketSize;
+		return result;
+}
 //---------------------------------------------------------------------------
-//int TMsgSocket_WaitForData(int Size, int Timeout)
-//{
-//    longword Elapsed;
+int TMsgSocket_WaitForData(int Size, int Timeout)
+{
+		longword Elapsed;
 
-//    // Check for connection active
-//    if (TMsgSocket_CanRead(0) && (WaitingData()==0))
-//        LastTcpError=WSAECONNRESET;
-//    else
-//        LastTcpError=0;
+		// Check for connection active
+		if (TMsgSocket_CanRead(0) && (TMsgSocket_WaitingData()==0))
+				LastTcpError=WSAECONNRESET;
+		else
+				LastTcpError=0;
 
-//    // Enter main loop
-//    if (LastTcpError==0)
-//    {
-//        Elapsed =SysGetTick();
-//        while((WaitingData()<Size) && (LastTcpError==0))
-//        {
-//            // Checks timeout
-//            if (DeltaTime(Elapsed)>=(longword)(Timeout))
-//                LastTcpError =WSAETIMEDOUT;
-//            else
-//                SysSleep(1);
-//        }
-//    }
-//    if(LastTcpError==WSAECONNRESET)
-//            Connected =false;
+		// Enter main loop
+		if (LastTcpError==0)
+		{
+				Elapsed =SysGetTick();
+				while((TMsgSocket_WaitingData()<Size) && (LastTcpError==0))
+				{
+						// Checks timeout
+						if (DeltaTime(Elapsed)>=(longword)(Timeout))
+								LastTcpError =WSAETIMEDOUT;
+						else
+								SysSleep(1);
+				}
+		}
+		if(LastTcpError==WSAECONNRESET)
+						Connected =false;
 
-//    return LastTcpError;
-//}
+		return LastTcpError;
+}
 //---------------------------------------------------------------------------
 void TMsgSocket_SetSocketOptions()
 {
@@ -553,7 +553,7 @@ int TMsgSocket_SendPacket(void *Data, int Size)
 //---------------------------------------------------------------------------
 //bool TMsgSocket_PacketReady(int Size)
 //{
-//	return (WaitingData()>=Size);
+//	return (TMsgSocket_WaitingData()>=Size);
 //}
 //---------------------------------------------------------------------------
 //int TMsgSocket_Receive(void *Data, int BufSize, int &SizeRecvd)
@@ -582,31 +582,31 @@ int TMsgSocket_SendPacket(void *Data, int Size)
 //---------------------------------------------------------------------------
 int TMsgSocket_RecvPacket(void *Data, int Size)
 {
-//    int BytesRead;
-//    WaitForData(Size, RecvTimeout);
-//    if (LastTcpError==0)
-//    {
-//        BytesRead=recv(FSocket, (char*)Data, Size, MSG_NOSIGNAL);
-//        if (BytesRead==0)
-//            LastTcpError = WSAECONNRESET;  // Connection reset by Peer
-//        else
-//            if (BytesRead<0)
-//                LastTcpError = TMsgSocket_GetLastSocketError();
-//    }
-//    else // After the timeout the bytes waiting were less then we expected
-//        if (LastTcpError==WSAETIMEDOUT)
-//            TMsgSocket_Purge();
+		int BytesRead;
+		TMsgSocket_WaitForData(Size, RecvTimeout);
+		if (LastTcpError==0)
+		{
+				BytesRead=recv(FSocket, (char*)Data, Size, MSG_NOSIGNAL);
+				if (BytesRead==0)
+						LastTcpError = WSAECONNRESET;  // Connection reset by Peer
+				else
+						if (BytesRead<0)
+								LastTcpError = TMsgSocket_GetLastSocketError();
+		}
+		else // After the timeout the bytes waiting were less then we expected
+				if (LastTcpError==WSAETIMEDOUT)
+						TMsgSocket_Purge();
 
-//    if (LastTcpError==WSAECONNRESET)
-//        Connected =false;
+		if (LastTcpError==WSAECONNRESET)
+				Connected =false;
 
-//    return LastTcpError;
+		return LastTcpError;
 }
 //---------------------------------------------------------------------------
 //int TMsgSocket_PeekPacket(void *Data, int Size)
 //{
 //    int BytesRead;
-//    WaitForData(Size, RecvTimeout);
+//    TMsgSocket_WaitForData(Size, RecvTimeout);
 //    if (LastTcpError==0)
 //    {
 //        BytesRead=recv(FSocket, (char*)Data, Size, MSG_PEEK | MSG_NOSIGNAL );
