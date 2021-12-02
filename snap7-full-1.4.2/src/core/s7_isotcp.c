@@ -300,14 +300,14 @@ int TIsoTcpSocket_isoRecvBuffer(void *Data, int *Size)
 	return Result;
 }
 //---------------------------------------------------------------------------
-int TIsoTcpSocket_isoExchangeBuffer(void *Data, int Size)
+int TIsoTcpSocket_isoExchangeBuffer(void *Data, int *Size)
 {
 	int Result;
 
 		TIsoTcpSocket_ClrIsoError();
-	Result =TIsoTcpSocket_isoSendBuffer(Data, Size);
+	Result =TIsoTcpSocket_isoSendBuffer(Data, *Size);
 	if (Result==0)
-		Result =TIsoTcpSocket_isoRecvBuffer(Data, &Size);
+		Result =TIsoTcpSocket_isoRecvBuffer(Data, Size);
 	return Result;
 }
 //---------------------------------------------------------------------------

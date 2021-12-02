@@ -249,7 +249,7 @@ typedef enum {
 	// Receives a buffer
 	int TIsoTcpSocket_isoRecvBuffer(void *Data, int *Size);
 	// Exchange cycle send->receive
-	int TIsoTcpSocket_isoExchangeBuffer(void *Data, int Size);
+	int TIsoTcpSocket_isoExchangeBuffer(void *Data, int *Size);
 	// A PDU is ready (at least its header) to be read
 	bool TIsoTcpSocket_IsoPDUReady();
 	// Same as isoSendBuffer, but the entire PDU has to be provided (in any case a check is performed)
