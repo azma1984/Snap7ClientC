@@ -315,19 +315,17 @@ void TSnapBase_init();
 				//bool Execute();
 
 
-////---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 //void Msg_CloseSocket(socket_t FSocket);
 //longword Msg_GetSockAddr(socket_t FSocket);
-////---------------------------------------------------------------------------
-//class SocketsLayer
-//{
-//private:
-//#ifdef OS_WINDOWS
-//    WSADATA wsaData;
-//#endif
-//public:
-//    SocketsLayer();
-//    ~SocketsLayer();
-//};
+//---------------------------------------------------------------------------
+
+#ifdef OS_WINDOWS
+		WSADATA wsaData;
+#endif
+
+		void SocketsLayer_init();
+		void SocketsLayer_deinit();
+
 
 #endif // snap_msgsock_h

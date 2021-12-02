@@ -29,8 +29,6 @@
 //---------------------------------------------------------------------------
 	word LocalPort;
 
-//static SocketsLayer SocketsLayerInitializer;
-
 //---------------------------------------------------------------------------
 //  Base class endian aware
 //---------------------------------------------------------------------------
@@ -901,26 +899,26 @@ int TMsgSocket_RecvPacket(void *Data, int Size)
 // - ICMP Helper Load (Windows)
 // - Check for raw socket (Unix or Windows if ICMP load failed)
 //---------------------------------------------------------------------------
-//SocketsLayer::SocketsLayer()
-//{
-//#ifdef OS_WINDOWS
-//    timeBeginPeriod(1); // it's not strictly related to socket but here is a nice place
-//    WSAStartup(0x202,&wsaData);
-//    if (IcmpInit())
-//       PingKind=pkWinHelper;
-//    else
-//#endif
-//    if (RawSocketsCheck())
-//        PingKind=pkRawSocket;
-//    else
-//        PingKind=pkCannotPing;
-//}
+void SocketsLayer_init()
+{
+#ifdef OS_WINDOWS
+		timeBeginPeriod(1); // it's not strictly related to socket but here is a nice place
+		WSAStartup(0x202,&wsaData);
+//		if (IcmpInit())
+//			 PingKind=pkWinHelper;
+//		else
+#endif
+//		if (RawSocketsCheck())
+//				PingKind=pkRawSocket;
+//		else
+//				PingKind=pkCannotPing;
+}
 
-//SocketsLayer::~SocketsLayer()
-//{
-//#ifdef OS_WINDOWS
-//    IcmpDone();
-//    WSACleanup();
-//    timeEndPeriod(1);
-//#endif
-//}
+void SocketsLayer_deinit()
+{
+#ifdef OS_WINDOWS
+		//IcmpDone();
+		WSACleanup();
+		timeEndPeriod(1);
+#endif
+}

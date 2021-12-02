@@ -7,13 +7,14 @@ void reading_tags(byte *data);
 
 int main()
 {
+	SocketsLayer_init();
 	TSnapBase_init();
 	TMsgSocket_init();
 	TSnap7Peer_init();
 	TIsoTcpSocket_init();
 	TSnap7MicroClient_init();
 
-	int ret = TSnap7MicroClient_ConnectTo("10.85.12.153",0,0);
+	int ret = TSnap7MicroClient_ConnectTo("192.168.1.100",0,0);
 
 	if (ret==0)
 	{
@@ -32,6 +33,7 @@ int main()
 
 	reading_tags(data);
 
+	SocketsLayer_deinit();
 	TSnap7MicroClient_deinit();
 	TIsoTcpSocket_deinit();
 	TSnap7Peer_deinit();
