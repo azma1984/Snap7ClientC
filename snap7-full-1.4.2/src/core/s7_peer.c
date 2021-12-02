@@ -90,7 +90,7 @@ int TSnap7Peer_NegotiatePDULength( )
 		ReqNegotiate->ParallelJobs_2 = 0x0100;
 		ReqNegotiate->PDULength = TSnapBase_SwapWord(PDURequest);
 		IsoSize = sizeof( TS7ReqHeader ) + sizeof( TReqFunNegotiateParams );
-		Result = TIsoTcpSocket_isoExchangeBuffer(NULL, IsoSize);
+		Result = TIsoTcpSocket_isoExchangeBuffer(NULL, &IsoSize);
 		if ((Result == 0) && (IsoSize == (int)(sizeof(TS7ResHeader23) + sizeof(TResFunNegotiateParams))))
 		{
 				// Setup pointers

@@ -198,7 +198,7 @@ int TSnap7MicroClient_opReadArea()
 					ReqParams->Items[0].Address[0] = Address & 0x000000FF;
 
 					IsoSize = sizeof(TS7ReqHeader)+RPSize;
-					Result = TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+					Result = TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 					// Get Data
 					if (Result==0)  // 1St level Iso
 					{
@@ -345,7 +345,7 @@ int TSnap7MicroClient_opWriteArea()
 
 //           memcpy(Target, Source, Size);
 //           IsoSize=RHSize + Size;
-//           Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//           Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //           if (Result==0) // 1St check : Iso result
 //           {
@@ -456,7 +456,7 @@ int TSnap7MicroClient_opReadMultiVars()
 //    IsoSize=RPSize+sizeof(TS7ReqHeader);
 //	if (IsoSize>PDULength)
 //		return errCliSizeOverPDU;
-//	Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//	Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //	if (Result!=0)
 //        return Result;
@@ -627,7 +627,7 @@ int TSnap7MicroClient_opWriteMultiVars()
 //    IsoSize=RPSize+sizeof(TS7ReqHeader)+int(Offset);
 //	if (IsoSize>PDULength)
 //		return errCliSizeOverPDU;
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //	if (Result!=0)
 //		return Result;
@@ -692,7 +692,7 @@ int TSnap7MicroClient_opListBlocks()
 //    ReqData[3] =0x00;
 
 //    IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunGetBlockInfo)+sizeof(TReqDataFunBlocks);
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 //    // Get Data
 //    if (Result==0)
 //    {
@@ -829,7 +829,7 @@ int TSnap7MicroClient_opListBlocksOfType()
 //        };
 
 //        IsoSize=sizeof(TS7ReqHeader)+DataLength;
-//        Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//        Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //        if (Result==0)
 //        {
@@ -952,7 +952,7 @@ int TSnap7MicroClient_opAgBlockInfo()
 //    ReqData->AsciiBlk[4]=(BlockNum / 1)+0x30;
 
 //    IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunGetBlockInfo)+sizeof(TReqDataBlockInfo);
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //    // Get Data
 //    if (Result==0)
@@ -1120,7 +1120,7 @@ int TSnap7MicroClient_opUpload()
 //    ReqParams->A=0x41; // 'A'
 
 //    IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunStartUploadParams);
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 //    // Get Upload Infos (only ID now)
 //    if (Result==0)
 //    {
@@ -1167,7 +1167,7 @@ int TSnap7MicroClient_opUpload()
 //        ReqParams->Upload_ID=Upload_ID;  // At begining is 0) we will put upload id incoming from plc
 
 //        IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunUploadParams);
-//        Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//        Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 //        // Get Upload Infos (only ID now)
 //        if (Result==0)
 //        {
@@ -1222,7 +1222,7 @@ int TSnap7MicroClient_opUpload()
 //            ReqParams->Upload_ID=Upload_ID;  // At begining is 0) we will put upload id incoming from plc
 
 //            IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunUploadParams);
-//            Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//            Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 //            // Get Upload Infos (only ID now)
 //            if (Result==0)
 //            {
@@ -1266,7 +1266,7 @@ int TSnap7MicroClient_opUpload()
 //            ReqParams->Upload_ID=Upload_ID;  // At begining is 0) we will put upload id incoming from plc
 
 //            IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunEndUploadParams);
-//            Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//            Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //            // Get EndUpload Result
 //            if (Result==0)
@@ -1410,7 +1410,7 @@ int TSnap7MicroClient_opDownload()
 //            ReqParams->AsciiMC7[5]=(BlockSize / 1)+0x30;
 
 //            IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqStartDownloadParams);
-//            Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//            Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //            // Get Result
 //            if (Result==0)
@@ -1578,7 +1578,7 @@ int TSnap7MicroClient_opDownload()
 //                ReqParams->Cmd[4]='E';
 
 //                IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqControlBlockParams);
-//                Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//                Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //                if (Result==0)
 //                {
@@ -1645,7 +1645,7 @@ int TSnap7MicroClient_opDelete()
 //    ReqParams->Cmd[4]='E';
 
 //    IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqControlBlockParams);
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //    if (Result==0)
 //    {
@@ -1762,7 +1762,7 @@ int TSnap7MicroClient_opReadSZL()
 //            IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunReadSZLNext)+DataSize;
 //         //--------------------------------------------------> prepare next
 //        }
-//        Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//        Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 //        // Get Data
 //        if (Result==0)
 //        {
@@ -1932,7 +1932,7 @@ int TSnap7MicroClient_opGetDateTime()
 //    *ReqData =0x0000000A;
 
 //    IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunDateTime)+sizeof(TReqDataGetDateTime);
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //    // Get Data
 //    if (Result==0)
@@ -2016,7 +2016,7 @@ int TSnap7MicroClient_opSetDateTime()
 //    ReqData->Time[7]=DateTime->tm_wday+1;
 
 //    IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunDateTime)+sizeof(TReqDataSetTime);
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //    // Get Result
 //    if (Result==0)
@@ -2150,7 +2150,7 @@ int TSnap7MicroClient_opPlcStop()
 //    memcpy(ReqParams->Cmd,&p_program,9);
 
 //    IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunPlcStop);
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //    if (Result==0)
 //    {
@@ -2203,7 +2203,7 @@ int TSnap7MicroClient_opPlcHotStart()
 //    memcpy(ReqParams->Cmd,&p_program,9);
 
 //    IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunPlcHotStart);
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //    if (Result==0)
 //    {
@@ -2261,7 +2261,7 @@ int TSnap7MicroClient_opPlcColdStart()
 //    memcpy(ReqParams->Cmd,&p_program,9);
 
 //    IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunPlcColdStart);
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //    if (Result==0)
 //    {
@@ -2322,7 +2322,7 @@ int TSnap7MicroClient_opCopyRamToRom()
 //    // Changes the timeout
 //    CurTimeout=RecvTimeout;
 //    RecvTimeout=Job.IParam;
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 //    // Restores the timeout
 //    RecvTimeout=CurTimeout;
 
@@ -2371,7 +2371,7 @@ int TSnap7MicroClient_opCompress()
 //    // Changes the timeout
 //    CurTimeout=RecvTimeout;
 //    RecvTimeout=Job.IParam;
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 //    // Restores the timeout
 //    RecvTimeout=CurTimeout;
 
@@ -2456,7 +2456,7 @@ int TSnap7MicroClient_opSetPassword()
 //    };
 
 //    IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunSecurity)+sizeof(TReqDataSecurity);
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //    // Get Return
 //    if (Result==0)
@@ -2503,7 +2503,7 @@ int TSnap7MicroClient_opClearPassword()
 //    ReqData->DLen     =0x0000;
 
 //    IsoSize=sizeof(TS7ReqHeader)+sizeof(TReqFunSecurity)+4;
-//    Result=TIsoTcpSocket_isoExchangeBuffer(0,IsoSize);
+//    Result=TIsoTcpSocket_isoExchangeBuffer(0,&IsoSize);
 
 //    // Get Return
 //    if (Result==0)
