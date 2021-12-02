@@ -176,7 +176,7 @@ typedef TIsoHeaderInfo *PIsoHeaderInfo;
 
 #define pdu_EoT    		 0x80  // End of Trasmission Packet (This packet is complete)
 
-#define DataHeaderSize sizeof(TTPKT)+sizeof(TCOTP_DT)
+#define DataHeaderSize (sizeof(TTPKT)+sizeof(TCOTP_DT))
 #define IsoFrameSize IsoPayload_Size+DataHeaderSize
 
 typedef struct {
