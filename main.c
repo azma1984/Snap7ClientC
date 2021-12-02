@@ -18,11 +18,11 @@ int main()
 
 	if (ret==0)
 	{
-		printf("Connected");
+		printf("Connected\n");
 	}
 	else
 	{
-		printf("Error: %d",ret);
+		printf("Error: %d\n",ret);
 		return 0;
 	}
 
@@ -50,8 +50,7 @@ void reading_tags(byte *data)
 		word w;
 		float f;
 	} a;
-	float f1;
-	byte by1;
+
 	int iRegim, iRabota, iPozhar, iAvar;
 	float fP1, fP2, fP3, fP4, fP5, fP6, fP7;
 	float fG1, fG2;
