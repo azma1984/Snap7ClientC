@@ -319,38 +319,38 @@ bool TIsoTcpSocket_IsoPDUReady()
 //---------------------------------------------------------------------------
 int TIsoTcpSocket_isoDisconnect(bool OnlyTCP)
 {
-//	int Result;
+	int Result;
 
-//    TIsoTcpSocket_ClrIsoError();
-//	if (Connected)
-//		TMsgSocket_Purge(); // Flush pending
-//	LastIsoError=0;
-//	// OnlyTCP true -> Disconnect Request telegram is not required : only TCP disconnection
-//	if (!OnlyTCP)
-//	{
-//		// if we are connected -> we have a valid connection telegram
-//		if (Connected)
-//			FControlPDU.COTP.PDUType =pdu_type_DR;
-//		// Checks the format
-//		Result =TIsoTcpSocket_CheckPDU(&FControlPDU, pdu_type_DR);
-//		if (Result!=0)
-//			return Result;
-//		// Sends Disconnect request
-//		TMsgSocket_SendPacket(&FControlPDU, TIsoTcpSocket_PDUSize(&FControlPDU));
-//		if (LastTcpError!=0)
-//		{
-//			Result =TIsoTcpSocket_SetIsoError(errIsoSendPacket);
-//			return Result;
-//		}
-//	}
-//	// TCP disconnect
-//	TMsgSocket_SckDisconnect();
-//	if (LastTcpError!=0)
-//		Result =TIsoTcpSocket_SetIsoError(errIsoDisconnect);
-//	else
-//		Result =0;
+		TIsoTcpSocket_ClrIsoError();
+	if (Connected)
+		TMsgSocket_Purge(); // Flush pending
+	LastIsoError=0;
+	// OnlyTCP true -> Disconnect Request telegram is not required : only TCP disconnection
+	if (!OnlyTCP)
+	{
+		// if we are connected -> we have a valid connection telegram
+		if (Connected)
+			FControlPDU.COTP.PDUType =pdu_type_DR;
+		// Checks the format
+		Result =TIsoTcpSocket_CheckPDU(&FControlPDU, pdu_type_DR);
+		if (Result!=0)
+			return Result;
+		// Sends Disconnect request
+		TMsgSocket_SendPacket(&FControlPDU, TIsoTcpSocket_PDUSize(&FControlPDU));
+		if (LastTcpError!=0)
+		{
+			Result =TIsoTcpSocket_SetIsoError(errIsoSendPacket);
+			return Result;
+		}
+	}
+	// TCP disconnect
+	TMsgSocket_SckDisconnect();
+	if (LastTcpError!=0)
+		Result =TIsoTcpSocket_SetIsoError(errIsoDisconnect);
+	else
+		Result =0;
 
-//	return Result;
+	return Result;
 }
 //---------------------------------------------------------------------------
 //int TIsoTcpSocket_isoSendPDU(PIsoDataPDU Data)
