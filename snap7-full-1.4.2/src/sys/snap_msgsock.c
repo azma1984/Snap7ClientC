@@ -546,11 +546,11 @@ int TMsgSocket_SendPacket(void *Data, int Size)
 
 		if (send(FSocket, (char*)Data, Size, MSG_NOSIGNAL)==Size)
 		{
-			if (Size>0) printf("Write: ");
+			if (Size>0) printf("Write %d: ",Size);
 			for(int i=0;i<Size;i++)
 			{
 				char *pch =(char*)Data+i;
-				printf("%02X ",*pch);
+				printf("%02X ",(*pch)&0xFF);
 			}
 
 			if (Size>0) printf("\n");
@@ -606,11 +606,11 @@ int TMsgSocket_RecvPacket(void *Data, int Size)
 						if (BytesRead<0)
 								LastTcpError = TMsgSocket_GetLastSocketError();
 
-				if (BytesRead>0) printf("Read: ");
+				if (BytesRead>0) printf("Read %d: ",BytesRead);
 				for(int i=0;i<BytesRead;i++)
 				{
 					char *pch =(char*)Data+i;
-					printf("%02X ",*pch);
+					printf("%02X ",(*pch)&0xFF);
 				}
 
 				if (BytesRead>0) printf("\n");
