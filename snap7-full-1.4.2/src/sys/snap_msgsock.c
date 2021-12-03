@@ -542,8 +542,21 @@ int TMsgSocket_SendPacket(void *Data, int Size)
 						return LastTcpError;
 				}
 		}
+
+
 		if (send(FSocket, (char*)Data, Size, MSG_NOSIGNAL)==Size)
-				return 0;
+		{
+			if (Size>0) printf("Write: ");
+			for(int i=0;i<Size;i++)
+			{
+				char *pch =(char*)Data+i;
+				printf("%02X ",*pch);
+			}
+
+			if (Size>0) printf("\n");
+
+			return 0;
+		}
 		else
 				Result =SOCKET_ERROR;
 
@@ -592,6 +605,15 @@ int TMsgSocket_RecvPacket(void *Data, int Size)
 				else
 						if (BytesRead<0)
 								LastTcpError = TMsgSocket_GetLastSocketError();
+
+				if (BytesRead>0) printf("Read: ");
+				for(int i=0;i<BytesRead;i++)
+				{
+					char *pch =(char*)Data+i;
+					printf("%02X ",*pch);
+				}
+
+				if (BytesRead>0) printf("\n");
 		}
 		else // After the timeout the bytes waiting were less then we expected
 				if (LastTcpError==WSAETIMEDOUT)
